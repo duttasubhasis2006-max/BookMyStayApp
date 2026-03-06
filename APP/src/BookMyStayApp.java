@@ -1,41 +1,29 @@
+import java.util.HashMap;
+import java.util.Map;
 
-abstract class Room {
+class RoomInventory {
 
-    String type;
-    int beds;
-    double price;
+    private HashMap<String, Integer> inventory;
 
-    Room(String type, int beds, double price) {
-        this.type = type;
-        this.beds = beds;
-        this.price = price;
+    RoomInventory() {
+        inventory = new HashMap<>();
+        inventory.put("Single", 5);
+        inventory.put("Double", 3);
+        inventory.put("Suite", 2);
     }
 
-    void display() {
-        System.out.println("Room Type: " + type);
-        System.out.println("Beds: " + beds);
-        System.out.println("Price: " + price);
+    int getAvailability(String roomType) {
+        return inventory.getOrDefault(roomType, 0);
     }
-}
 
-class SingleRoom extends Room {
-
-    SingleRoom() {
-        super("Single Room", 1, 1000);
+    void updateAvailability(String roomType, int count) {
+        inventory.put(roomType, count);
     }
-}
 
-class DoubleRoom extends Room {
-
-    DoubleRoom() {
-        super("Double Room", 2, 1800);
-    }
-}
-
-class SuiteRoom extends Room {
-
-    SuiteRoom() {
-        super("Suite Room", 3, 3500);
+    void displayInventory() {
+        for (Map.Entry<String, Integer> entry : inventory.entrySet()) {
+            System.out.println(entry.getKey() + " Rooms Available: " + entry.getValue());
+        }
     }
 }
 
@@ -43,23 +31,13 @@ public class BookMyStayApp {
 
     public static void main(String[] args) {
 
-        Room single = new SingleRoom();
-        Room doubleRoom = new DoubleRoom();
-        Room suite = new SuiteRoom();
+        RoomInventory inventory = new RoomInventory();
 
-        int singleAvailability = 5;
-        int doubleAvailability = 3;
-        int suiteAvailability = 2;
+        inventory.displayInventory();
 
-        single.display();
-        System.out.println("Available: " + singleAvailability);
-        System.out.println();
+        inventory.updateAvailability("Single", 4);
 
-        doubleRoom.display();
-        System.out.println("Available: " + doubleAvailability);
-        System.out.println();
-
-        suite.display();
-        System.out.println("Available: " + suiteAvailability);
+        System.out.println("Updated Availability:");
+        inventory.displayInventory();
     }
 }
